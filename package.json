@@ -33,7 +33,7 @@
     "dist"
   ],
   "bin": {
-    "mysql-schema-ts": "./dist/bin/index.js"
+    "mysql-schema-ts": "./dist/dist/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

@@ -2,6 +2,9 @@
 
 > mysql8-schema-ts is a simple npm module you can use to convert a mysql schema into typescript interfaces
 
+Further interation to the original mysql-schema.ts by Netto Farad.
+Adds support for Mysql 8 and fixes a few quirks in the original lib.
+
 # Usage
 
 ```bash
