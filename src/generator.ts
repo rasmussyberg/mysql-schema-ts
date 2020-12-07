@@ -6,11 +6,15 @@ export interface Column {
   hasDefault: boolean
   defaultValue: string | null
   comment: string | null
-  tsType?: string
+  tsType: string
 }
 
 export interface Table {
   [columnName: string]: Column
+}
+
+export interface TableNonTsType {
+  [columnName: string]: Omit<Column, 'tsType'>
 }
 
 function camelize(s: string): string {
@@ -29,21 +33,19 @@ function normalize(name: string): string {
 
 export function tableToTS(name: string, prefix: string, table: Table): string {
   const members = (withDefaults: boolean): string[] =>
-    Object.keys(table).map(column => {
+    Object.keys(table).map((column) => {
       const type = table[column].tsType
-      const nullable = table[column].nullable ? '| null' : ''
-
+      const nullable = table[column].nullable
+      const nullablestr = nullable ? '| null' : ''
       const hasDefault = table[column].hasDefault
-      const defaultComment = hasDefault ? `Defaults to: ${table[column].defaultValue}.` : ''
+      const defaultValue = table[column].defaultValue ?? ''
+      const defaultComment = withDefaults && hasDefault ? `Defaults to: ${defaultValue}` : ''
       const comment = `${table[column].comment} ${defaultComment}`
       const tsComment = comment.trim().length > 0 ? `\n/** ${comment} */\n` : ''
 
-      let isOptional = table[column].nullable
-      if (withDefaults) {
-        isOptional = isOptional || hasDefault
-      }
+      const isOptional = withDefaults ? nullable || hasDefault : nullable
 
-      return `${tsComment}${normalize(column)}${isOptional ? '?' : ''}: ${type}${nullable}\n`
+      return `${tsComment}${normalize(column)}${withDefaults && isOptional ? '?' : ''}: ${type}${nullablestr}\n`
     })
 
   const tableName = (prefix || '') + camelize(normalize(name))
@@ -51,7 +53,8 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
   return `
     /**
      * Exposes all fields present in ${name} as a typescript
-     * interface.
+     * interface. 
+     * This is especially useful for SELECT * FROM
     */
     export interface ${tableName} {
     ${members(false)}

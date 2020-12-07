@@ -1,17 +1,16 @@
 {
-  "name": "mysql-schema-ts",
-  "version": "1.6.2",
-  "description": "mysql-schema-ts coverts mysql schemas into typescript interfaces",
+  "name": "mysql8-schema-ts",
+  "version": "1.0.0",
+  "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "author": "Netto Farah <nettofarah@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint src/**/*.ts",
     "test": "docker-compose up -d && jest --runInBand --forceExit",
     "pub": "tsc && np",
     "mycli": "docker run -it --rm --network host chaifeng/mycli mysql://localhost:3306/test",
-    "cli": "ts-node --transpile-only ./bin/index.ts"
+    "cli": "ts-node --transpile-only ./src/index.ts"
   },
   "prettier": {
     "semi": false,
@@ -20,14 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nettofarah/mysql-schema-ts.git"
+    "url": "https://github.com/rasmussyberg/mysql8-schema-ts.git"
   },
   "dependencies": {
-    "camelcase": "^5.3.1",
-    "lodash": "^4.17.15",
-    "meow": "^6.0.0",
-    "mysql": "^2.17.1",
-    "prettier": "^1.19.1",
+    "camelcase": "^6.2.0",
+    "lodash": "^4.17.20",
+    "meow": "^8.0.0",
+    "moment": "^2.29.1",
+    "mysql2": "^2.2.5",
     "sql-template-strings": "^2.2.2"
   },
   "files": [
@@ -38,7 +37,6 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
       "prettier --write",
       "git add"
     ],
@@ -58,22 +56,22 @@
     "schema"
   ],
   "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "@types/lodash": "^4.14.149",
+    "@types/jest": "^26.0.16",
+    "@types/lodash": "^4.14.165",
     "@types/meow": "^5.0.0",
-    "@types/mysql": "^2.15.8",
-    "@types/node": "^12.12.14",
-    "@types/prettier": "^1.19.0",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
+    "@types/node": "^14.14.10",
+    "@types/prettier": "^2.1.5",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
-    "husky": "^3.1.0",
-    "jest": "^24.9.0",
-    "lint-staged": "^9.5.0",
-    "np": "^5.2.1",
-    "ts-jest": "^24.2.0",
-    "ts-node": "^8.6.2",
-    "typescript": "^3.7.3"
+    "eslint-config-prettier": "^7.0.0",
+    "prettier": "^2.2.1",
+    "husky": "^4.3.5",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.3",
+    "np": "^7.0.0",
+    "ts-jest": "^26.4.4",
+    "ts-node": "^9.1.0",
+    "typescript": "^4.1.2"
   }
 }

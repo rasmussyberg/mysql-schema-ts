@@ -1,6 +1,6 @@
-import { createConnection, Connection, MysqlError } from 'mysql'
+import { createConnection, Connection, QueryError } from 'mysql2'
 import { parse as urlParse } from 'url'
-import { Table } from './typescript'
+import { Table, TableNonTsType } from 'generator'
 import { mapColumn } from './column-map'
 import { SQL as sql, SQLStatement } from 'sql-template-strings'
 
@@ -32,13 +32,13 @@ type TableType = {
 
 export type Enums = { [key: string]: string[] }
 
-export function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
+export async function query<T>(conn: Connection, sql: SQLStatement): Promise<T[]> {
   return new Promise((resolve, reject) => {
-    conn.query(sql.sql, sql.values, (error: MysqlError | null, results: Array<T>) => {
+    conn.query(sql.sql, sql.values, (error: QueryError | null, results) => {
       if (error) {
         return reject(error)
       }
-      return resolve(results)
+      return resolve(results as T[])
     })
   })
 }
@@ -61,9 +61,9 @@ export class MySQL {
 
   public async allTables(): Promise<{ name: string; table: Table }[]> {
     const names = await this.tableNames()
-    const nameMapping = names.map(async name => ({
+    const nameMapping = names.map(async (name) => ({
       name,
-      table: await this.table(name)
+      table: await this.table(name),
     }))
 
     return Promise.all(nameMapping)
@@ -72,13 +72,13 @@ export class MySQL {
   private async tableNames(): Promise<string[]> {
     const schemaTables = await query<TableType>(
       this.connection,
-      sql`SELECT table_name
+      sql`SELECT table_name as table_name
        FROM information_schema.columns
        WHERE table_schema = ${this.schema()}
        GROUP BY table_name
       `
     )
-    return schemaTables.map(schemaItem => schemaItem.table_name)
+    return schemaTables.map((schemaItem) => schemaItem.table_name)
   }
 
   public schema(): string {
@@ -90,14 +90,14 @@ export class MySQL {
 
     const rawEnumRecords = await query<EnumRecord>(
       this.connection,
-      sql`SELECT column_name, column_type, data_type 
+      sql`SELECT column_name as column_name, column_type as column_type, data_type as data_type 
       FROM information_schema.columns 
       WHERE data_type IN ('enum', 'set')
       AND table_schema = ${this.schema()}
       AND table_name = ${tableName}`
     )
 
-    rawEnumRecords.forEach(enumItem => {
+    rawEnumRecords.forEach((enumItem) => {
       const enumName = enumNameFromColumn(enumItem.data_type, enumItem.column_name)
       const enumValues = parseEnum(enumItem.column_type)
       enums[enumName] = enumValues
@@ -106,18 +106,18 @@ export class MySQL {
     return enums
   }
 
-  private async getTable(tableName: string, tableSchema: string): Promise<Table> {
-    const Table: Table = {}
+  private async getTable(tableName: string, tableSchema: string): Promise<TableNonTsType> {
+    const Table: TableNonTsType = {}
 
     const tableColumns = await query<TableColumnType>(
       this.connection,
-      sql`SELECT column_name, data_type, is_nullable, column_default, column_comment
+      sql`SELECT column_name as column_name, data_type as data_type, is_nullable as is_nullable, column_default as column_default, column_comment as column_comment
        FROM information_schema.columns
        WHERE table_name = ${tableName} 
        AND table_schema = ${tableSchema}`
     )
 
-    tableColumns.forEach(schemaItem => {
+    tableColumns.forEach((schemaItem) => {
       const columnName = schemaItem.column_name
       const dataType = schemaItem.data_type
       const isEnum = /^(enum|set)$/i.test(dataType)
@@ -128,7 +128,7 @@ export class MySQL {
         comment: schemaItem.column_comment,
         hasDefault: Boolean(schemaItem.column_default),
         defaultValue: schemaItem.column_default,
-        nullable
+        nullable,
       }
     })
 
