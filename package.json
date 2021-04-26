@@ -2,8 +2,8 @@
   "name": "mysql8-schema-ts",
   "version": "2.0.2",
   "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/service/index.js",
+  "types": "./dist/service/index.d.ts",
   "author": "Netto Farah <nettofarah@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -22,13 +22,14 @@
     "meow": "^8.0.0",
     "moment": "^2.29.1",
     "mysql2": "^2.2.5",
+    "read-pkg-up": "^8.0.0",
     "sql-template-strings": "^2.2.2"
   },
   "files": [
     "dist"
   ],
   "bin": {
-    "mysql8-schema-ts": "./dist/index.js"
+    "mysql8-schema-ts": "./dist/service/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

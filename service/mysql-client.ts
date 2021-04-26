@@ -1,6 +1,6 @@
 import { createConnection, Connection, QueryError } from 'mysql2'
 import { parse as urlParse } from 'url'
-import { Table, TableNonTsType } from 'generator'
+import { Table, TableNonTsType } from '@/../service/generator'
 import { mapColumn } from './column-map'
 import { SQL as sql, SQLStatement } from 'sql-template-strings'
 

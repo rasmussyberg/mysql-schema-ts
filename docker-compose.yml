@@ -1,7 +1,7 @@
 mysql:
   image: mysql:8.0.22
   ports:
-    - '3306:3306'
+    - '33306:3306'
   environment:
     MYSQL_DATABASE: test
     MYSQL_ALLOW_EMPTY_PASSWORD: 'true'

@@ -27,7 +27,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "declaration": true,
-    "baseUrl": "src",
+    "baseUrl": "service",
     "paths": {
       "@/*": ["./*"]
     }

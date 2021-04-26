@@ -1,4 +1,4 @@
-import { Table, TableNonTsType } from 'generator'
+import { Table, TableNonTsType } from '@/../service/generator'
 import { mapValues } from 'lodash'
 import { Enums } from './mysql-client'
 
