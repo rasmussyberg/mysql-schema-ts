@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { inferSchema, inferTable } from 'table'
+import { inferSchema, inferTable } from './table'
 import meow from 'meow'
 
 const cli = meow(

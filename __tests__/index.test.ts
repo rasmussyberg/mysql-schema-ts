@@ -43,7 +43,7 @@ const complex = sql`
     documented_field varchar(255) COMMENT "This is an awesome field"
   )
 `
-const time = moment().format('YYYY-MM-DD hh:mm')
+const time = moment().format('YYYY-MM-DD')
 
 beforeAll(async () => {
   await query(conn, agreements)
@@ -217,6 +217,7 @@ describe('inferTable', () => {
 describe('inferSchema', () => {
   it('infers all tables at once', async () => {
     const code = await inferSchema(connectionString)
+    console.log(code)
     expect(code).toMatchInlineSnapshot(`
       "/**
        * AUTO-GENERATED FILE @ ${time} - DO NOT EDIT!
@@ -254,6 +255,7 @@ describe('inferSchema', () => {
         category: string
         name: string
       }
+
       /**
        * Exposes all fields present in complex as a typescript
        * interface.
@@ -286,6 +288,7 @@ describe('inferSchema', () => {
         /** This is an awesome field  */
         documented_field?: string | null
       }
+
       /**
        * Exposes all fields present in requests as a typescript
        * interface.
@@ -311,6 +314,7 @@ describe('inferSchema', () => {
         url: string
         integration_type: 'source' | 'destination'
       }
+
       /**
        * Exposes all fields present in table_with_json as a typescript
        * interface.

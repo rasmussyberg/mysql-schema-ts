@@ -24,6 +24,8 @@ type TableColumnType = {
   is_nullable: string
   column_default: string | null
   column_comment: string | null
+  column_key: string | null
+  extra: string | null
 }
 
 type TableType = {
@@ -111,10 +113,22 @@ export class MySQL {
 
     const tableColumns = await query<TableColumnType>(
       this.connection,
-      sql`SELECT column_name as column_name, data_type as data_type, is_nullable as is_nullable, column_default as column_default, column_comment as column_comment
-       FROM information_schema.columns
-       WHERE table_name = ${tableName} 
-       AND table_schema = ${tableSchema}`
+      sql`SELECT
+        ORDINAL_POSITION AS ordinal_position,
+        COLUMN_NAME AS column_name,
+        DATA_TYPE AS data_type,
+        IS_NULLABLE AS is_nullable,
+        COLUMN_DEFAULT AS column_default,
+        COLUMN_COMMENT AS column_comment,
+        COLUMN_KEY AS column_key,
+        EXTRA AS extra
+      FROM
+        INFORMATION_SCHEMA.COLUMNS
+      WHERE
+       TABLE_NAME = ${tableName} 
+       AND TABLE_SCHEMA = ${tableSchema}
+      ORDER BY 
+        ORDINAL_POSITION`
     )
 
     tableColumns.forEach((schemaItem) => {
@@ -122,12 +136,14 @@ export class MySQL {
       const dataType = schemaItem.data_type
       const isEnum = /^(enum|set)$/i.test(dataType)
       const nullable = schemaItem.is_nullable === 'YES'
-
+      const defaultValue = schemaItem.column_default ?? (schemaItem.extra === 'auto_increment' ? schemaItem.extra : '')
+      const hasDefault = Boolean(defaultValue)
+      //console.log('TABLE:', tableName, schemaItem)
       Table[columnName] = {
         udtName: isEnum ? enumNameFromColumn(dataType, columnName) : dataType,
         comment: schemaItem.column_comment,
-        hasDefault: Boolean(schemaItem.column_default),
-        defaultValue: schemaItem.column_default,
+        defaultValue,
+        hasDefault,
         nullable,
       }
     })
