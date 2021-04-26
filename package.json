@@ -2,20 +2,15 @@
   "name": "mysql8-schema-ts",
   "version": "2.0.0",
   "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
-  "main": "./dist/src/index.js",
-  "types": "./dist/src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "author": "Netto Farah <nettofarah@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "docker-compose up -d && jest --runInBand --forceExit",
-    "pub": "tsc && np",
+    "pub": "tsc -p ./tsconfig.build.json && np",
     "mycli": "docker run -it --rm --network host chaifeng/mycli mysql://localhost:3306/test",
     "cli": "ts-node --project ./tsconfig.json --files ./src/index.ts"
-  },
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "printWidth": 120
   },
   "repository": {
     "type": "git",
@@ -33,7 +28,7 @@
     "dist"
   ],
   "bin": {
-    "mysql-schema-ts": "./dist/dist/index.js"
+    "mysql-schema-ts": "./dist/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
