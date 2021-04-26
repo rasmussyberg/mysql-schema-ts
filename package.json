@@ -28,7 +28,7 @@
     "dist"
   ],
   "bin": {
-    "mysql-schema-ts": "./dist/index.js"
+    "mysql8-schema-ts": "./dist/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
