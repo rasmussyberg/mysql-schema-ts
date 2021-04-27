@@ -1,6 +1,6 @@
 {
   "name": "mysql8-schema-ts",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
   "main": "./dist/service/index.js",
   "types": "./dist/service/index.d.ts",
