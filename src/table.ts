@@ -2,7 +2,7 @@ import { tableToTS, Table } from './generator'
 import { MySQL } from './mysql-client'
 import prettier from 'prettier'
 import moment from 'moment'
-import pkg from '../package.json'
+import pkg from './pkg.json'
 
 function pretty(code: string): string {
   return prettier.format(code, {

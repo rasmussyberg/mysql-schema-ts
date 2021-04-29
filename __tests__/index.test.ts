@@ -1,9 +1,9 @@
 import { createConnection } from 'mysql2'
-import { query } from '../service/mysql-client'
-import { inferTable, inferSchema } from '../service/table'
+import { query } from '../src/mysql-client'
+import { inferTable, inferSchema } from '../src/table'
 import { SQL as sql } from 'sql-template-strings'
 import moment from 'moment'
-import pkg from '../package.json'
+import pkg from '../src/pkg.json'
 
 const connectionString = 'mysql://root@localhost:33306/test'
 const conn = createConnection(connectionString)

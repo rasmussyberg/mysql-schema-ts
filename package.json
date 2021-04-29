@@ -2,27 +2,26 @@
   "name": "mysql8-schema-ts",
   "version": "2.0.8",
   "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
-  "main": "./dist/service/index.js",
-  "types": "./dist/service/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "author": "Netto Farah <nettofarah@gmail.com>",
   "license": "MIT",
   "scripts": {
     "test": "docker-compose up -d && jest --runInBand --forceExit",
     "clean": "rm -rf dist && mkdir dist",
     "compile": "tsc -p ./tsconfig.build.json",
-    "build": "npm run clean && npm run compile && cp ./package.json ./dist/package.json && cp ./README.md ./dist/README.md",
-    "pub": "np",
+    "build": "npm run clean && npm run compile ",
+    "pub": "npm run build && np",
     "mycli": "docker run -it --rm --network host chaifeng/mycli mysql://localhost:3306/test",
     "cli": "ts-node --project ./tsconfig.json --files ./src/index.ts",
-    "version": "npm build"
+    "version": "ts-node scripts/writeData.ts"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/rasmussyberg/mysql8-schema-ts.git"
   },
   "np": {
-    "yarn": false,
-    "contents": "dist"
+    "yarn": false
   },
   "dependencies": {
     "camelcase": "^6.2.0",
@@ -37,7 +36,7 @@
     "dist"
   ],
   "bin": {
-    "mysql8-schema-ts": "./dist/service/index.js"
+    "mysql8-schema-ts": "./dist/index.js"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
