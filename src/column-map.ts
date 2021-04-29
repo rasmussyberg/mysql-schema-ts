@@ -45,7 +45,6 @@ function findTsType(udtName: string): string | null {
       return 'string'
     case 'integer':
     case 'int':
-    case 'tinyint':
     case 'smallint':
     case 'mediumint':
     case 'bigint':
@@ -55,6 +54,8 @@ function findTsType(udtName: string): string | null {
     case 'float':
     case 'year':
       return 'number'
+    case 'tinyint':
+      return 'boolean'
     case 'json':
       return 'JSONValue'
     case 'date':
