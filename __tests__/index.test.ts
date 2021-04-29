@@ -13,7 +13,8 @@ const agreements = sql`
     id varbinary(24) NOT NULL,              
     billing_plan_id varbinary(24) NOT NULL, 
     category varbinary(24) NOT NULL,        
-    name varbinary(64) NOT NULL,            
+    name varbinary(64) NOT NULL, 
+    count tinyint NOT NULL, 
     PRIMARY KEY (id)                        
 )`
 
@@ -51,6 +52,9 @@ beforeAll(async () => {
   await query(conn, complex)
   await query(conn, withJSON)
 })
+
+process.env.BINARY_AS_BUFFER = 'true'
+process.env.TINYINT_AS_BOOLEAN = 'false'
 
 describe('inferTable', () => {
   it('infers a table', async () => {

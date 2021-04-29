@@ -5,10 +5,13 @@ import { Enums } from './mysql-client'
 interface MapColumnOptions {
   /** Treats binary fields as strings */
   BinaryAsBuffer: boolean
+  /** Treats tinyint fields as booleans */
+  TinyInAsBoolean: boolean
 }
 
 const options: MapColumnOptions = {
   BinaryAsBuffer: Boolean(process.env.BINARY_AS_BUFFER),
+  TinyInAsBoolean: Boolean(process.env.TINYINT_AS_BOOLEAN),
 }
 
 export function mapColumn(Table: TableNonTsType, enumTypes: Enums): Table {
@@ -45,7 +48,6 @@ function findTsType(udtName: string): string | null {
       return 'string'
     case 'integer':
     case 'int':
-    case 'tinyint':
     case 'smallint':
     case 'mediumint':
     case 'bigint':
@@ -69,6 +71,8 @@ function findTsType(udtName: string): string | null {
     case 'varbinary':
     case 'bit':
       return options.BinaryAsBuffer ? 'Buffer' : 'string'
+    case 'tinyint':
+      return options.TinyInAsBoolean ? 'boolean' : 'number'
     default:
       return null
   }
