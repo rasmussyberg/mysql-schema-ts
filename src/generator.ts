@@ -1,4 +1,5 @@
 import camelcase from 'camelcase'
+import config from './config'
 
 export interface Column {
   udtName: string
@@ -36,7 +37,7 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
     Object.keys(table).map((column) => {
       const type = table[column].tsType
       const nullable = table[column].nullable
-      const nullablestr = nullable ? '| null' : ''
+      const nullablestr = !nullable || (!withDefaults && config.nullAsUndefined) ? '' : '| null'
       const hasDefault = table[column].hasDefault
       const defaultValue = table[column].defaultValue ?? ''
       const defaultComment = withDefaults && hasDefault ? `Defaults to: ${defaultValue}` : ''
@@ -45,7 +46,9 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
 
       const isOptional = withDefaults ? nullable || hasDefault : nullable
 
-      return `${tsComment}${normalize(column)}${withDefaults && isOptional ? '?' : ''}: ${type}${nullablestr}\n`
+      return `${tsComment}${normalize(column)}${
+        (withDefaults && isOptional) || (isOptional && config.nullAsUndefined) ? '?' : ''
+      }: ${type}${nullablestr}\n`
     })
 
   const tableName = (prefix || '') + camelize(normalize(name))

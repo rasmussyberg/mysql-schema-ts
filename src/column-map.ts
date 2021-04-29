@@ -1,15 +1,7 @@
 import { Table, TableNonTsType } from '@/../src/generator'
 import { mapValues } from 'lodash'
 import { Enums } from './mysql-client'
-
-interface MapColumnOptions {
-  /** Treats binary fields as strings */
-  BinaryAsBuffer: boolean
-}
-
-const options: MapColumnOptions = {
-  BinaryAsBuffer: Boolean(process.env.BINARY_AS_BUFFER),
-}
+import config from './config'
 
 export function mapColumn(Table: TableNonTsType, enumTypes: Enums): Table {
   return mapValues(Table, (column) => {
@@ -69,7 +61,9 @@ function findTsType(udtName: string): string | null {
     case 'binary':
     case 'varbinary':
     case 'bit':
-      return options.BinaryAsBuffer ? 'Buffer' : 'string'
+      return config.binaryAsBuffer ? 'Buffer' : 'string'
+    case 'tinyint':
+      return config.tinyIntAsBoolean ? 'boolean' : 'number'
     default:
       return null
   }
