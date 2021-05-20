@@ -56,7 +56,7 @@ const cli = meow(
 )
 
 const db = cli.input[0]
-const { table, prefix, tinyIntAsBoolean, binaryAsBuffer, nullAsUndefined } = cli.flags
+const { table, prefix, tinyIntAsBoolean, binaryAsBuffer, nullAsUndefined, nullPlusUndefined } = cli.flags
 
 async function main(): Promise<string> {
   if (!db) {
@@ -68,6 +68,7 @@ async function main(): Promise<string> {
   config.binaryAsBuffer = binaryAsBuffer
   config.tinyIntAsBoolean = tinyIntAsBoolean
   config.nullAsUndefined = nullAsUndefined
+  config.nullPlusUndefined = nullPlusUndefined
 
   if (cli.flags.table) {
     return inferTable(db, table, prefix)
