@@ -9,11 +9,11 @@ const cli = meow(
 	  $ mysql8-schema-ts <input>
 
 	Options
-    --table, -t                Table name
-    --prefix, -p               Prefix to add to table names
-    --tinyIntAsBoolean, -tb    Treat TinyInt as Boolean
-    --binaryAsBuffer, -bb      Treat Binary as Buffer
-    --nullAsUndefined, -nu     Treat null as undefined   
+    --table, -t               Table name
+    --prefix, -p              Prefix to add to table names
+    --tinyIntAsBoolean, -b    Treat TinyInt as Boolean
+    --binaryAsBuffer, -B      Treat Binary as Buffer
+    --nullAsUndefined, -u     Treat null as undefined   
 
 	Examples
 	  $ mysql8-schema-ts --prefix SQL
@@ -32,17 +32,17 @@ const cli = meow(
       },
       tinyIntAsBoolean: {
         type: 'boolean',
-        alias: 'tb',
+        alias: 'b',
         default: false,
       },
       binaryAsBuffer: {
         type: 'boolean',
-        alias: 'bb',
+        alias: 'B',
         default: false,
       },
       nullAsUndefined: {
         type: 'boolean',
-        alias: 'nu',
+        alias: 'u',
         default: false,
       },
     },
