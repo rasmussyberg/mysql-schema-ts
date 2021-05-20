@@ -47,7 +47,7 @@ export function tableToTS(name: string, prefix: string, table: Table): string {
       const isOptional = withDefaults ? nullable || hasDefault : nullable
 
       return `${tsComment}${normalize(column)}${
-        (withDefaults && isOptional) || (isOptional && config.nullAsUndefined) ? '?' : ''
+        (withDefaults && isOptional) || (isOptional && (config.nullAsUndefined || config.nullPlusUndefined)) ? '?' : ''
       }: ${type}${nullablestr}\n`
     })
 

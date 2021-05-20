@@ -1,7 +1,7 @@
 {
   "name": "mysql8-schema-ts",
   "version": "2.1.1",
-  "description": "mysql8-schema-ts coverts mysql schemas into typescript interfaces",
+  "description": "mysql8-schema-ts converts mysql schemas into typescript interfaces",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "author": "Netto Farah <nettofarah@gmail.com>",

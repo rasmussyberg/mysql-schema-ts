@@ -14,6 +14,7 @@ const cli = meow(
     --tinyIntAsBoolean, -b    Treat TinyInt as Boolean
     --binaryAsBuffer, -B      Treat Binary as Buffer
     --nullAsUndefined, -u     Treat null as undefined   
+    --nullPlusUndefined, -p   Treat as null and undefined   
 
 	Examples
 	  $ mysql8-schema-ts --prefix SQL
@@ -43,6 +44,11 @@ const cli = meow(
       nullAsUndefined: {
         type: 'boolean',
         alias: 'u',
+        default: false,
+      },
+      nullPlusUndefined: {
+        type: 'boolean',
+        alias: 'p',
         default: false,
       },
     },
